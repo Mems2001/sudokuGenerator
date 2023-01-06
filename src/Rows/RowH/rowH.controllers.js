@@ -44,7 +44,6 @@ const createRowH = async(idA , idB , idC , idD , idE , idF , idG) => {
     };
     // console.log(columns)
 
-    
     const generateRandom = () => {
         return Math.ceil(Math.random()*9)
     };
@@ -158,7 +157,7 @@ const createRowH = async(idA , idB , idC , idD , idE , idF , idG) => {
     };
 
     for (set in missing2) {
-        if (missing2[set].length>3) {
+        if (missing2[set].length>2) {
             console.log('inviable puzzle')
             return null
         }
