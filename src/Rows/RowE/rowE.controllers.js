@@ -197,13 +197,13 @@ const createRowE = async(idA , idB , idC , idD) => {
         // console.log('Max Prob:' , maxProb , columns[5]);
 
         const Prior = (array , n) => {
-            let notPrior = true;
+            let isPrior = false;
             for (number of array) {
                 if (n === number) {
-                    notPrior = false
+                     isPrior = true
                 }
             };
-            return notPrior
+            return  isPrior
         }; 
         const QPrior = () => {
             let value = 0;
@@ -236,27 +236,45 @@ const createRowE = async(idA , idB , idC , idD) => {
                 if (n === Ckeys2[0]) {
                     // console.log(n , Ckeys2[0] , 'avoided')
                     return true
+                } else {
+                    value = checkQCA(quadrant , columns[j] , array , n)
                 }
             };
             if (j<6 && Ckeys3Conflict===3 && Ckeys3.length===1) {
                 if (n === Ckeys3[0]) {
                     // console.log(n , Ckeys3[0] , 'avoided')
                     return true
+                } else {
+                    value = checkQCA(quadrant , columns[j] , array , n)
                 }
             };
             if (j===1 && Ckeys1Conflict===3 && Ckeys1.length===3) {
-                value = Prior(Ckeys1 , n)
+                if (Prior(Ckeys1 , n)) {
+                    value = checkQCA(quadrant , columns[j] , array , n)
+                }
             } else if (j===4 && Ckeys2Conflict===3 && Ckeys2.length===3) {
-                value = Prior(Ckeys2 , n)
+                if (Prior(Ckeys2 , n)) {
+                    value = checkQCA(quadrant , columns[j] , array , n)
+                }
             } else if (j===7 && Ckeys3Conflict===3 && Ckeys3.length===3) {
-                value = Prior(Ckeys3 , n)
+                if (Prior(Ckeys3 , n)) {
+                    value = checkQCA(quadrant , columns[j] , array , n)
+                }
             } else if (dice < max) {
-                value = QPrior()
+                if (!QPrior()) {
+                    value = checkQCA(quadrant , columns[j] , array , n)
+                } else {
+                    value = QPrior()
+                }
             } else {
                 value = checkQCA(quadrant , columns[j] , array , n)
             }
         } else if (dice < max) {
-            value = QPrior()
+            if (!QPrior()) {
+                value = checkQCA(quadrant , columns[j] , array , n)
+            } else {
+                value = QPrior()
+            }
         } else {
             value = checkQCA(quadrant , columns[j] , array , n)
         };
