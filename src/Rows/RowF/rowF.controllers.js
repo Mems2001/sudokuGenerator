@@ -5,7 +5,6 @@ const { findRowBById } = require('../RowB/rowB.controllers');
 const { findRowCById } = require('../RowC/rowC.controllers');
 const { findRowDById } = require('../RowD/rowD.controllers');
 const { findRowEById } = require('../RowE/rowE.controllers');
-const { createSudoku } = require('../../Sudokus/sudokus.controllers');
 
 const createRowF = async(idA , idB , idC , idD , idE) => {
 
@@ -79,10 +78,10 @@ const createRowF = async(idA , idB , idC , idD , idE) => {
             }
         };
         if (!exists) {
-            console.log('not key')
+            // console.log('not key')
             return true
         } else {
-            console.log('is Key')
+            // console.log('is Key')
             return checkQCA(quadrant , column , numbers , n)
         }
     }

@@ -16,7 +16,7 @@ db.authenticate()
     .catch(err => {
         console.log(err)
     })
-db.sync({force:true})
+db.sync({force:false})
     .then(() => {
         console.log('Database synced')
     })
