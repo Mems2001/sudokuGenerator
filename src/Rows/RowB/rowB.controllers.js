@@ -27,8 +27,7 @@ const createRowB = async(id) => {
     const numbers = [];
 
     const generateRandom = () => {
-        const random = Math.ceil(Math.random()*9);
-        return random
+        return Math.ceil(Math.random()*9);
     };
 
     const verifyDuplicate = (n , array , j) => {

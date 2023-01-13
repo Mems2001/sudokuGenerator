@@ -38,8 +38,7 @@ const createRowE = async(idA , idB , idC , idD) => {
     };
 
     const generateRandom = () => {
-        const random = Math.ceil(Math.random() * 9);
-        return random
+        return Math.ceil(Math.random() * 9)
     };
 
     const checkQCA = (quadrant , column , array , n) => {

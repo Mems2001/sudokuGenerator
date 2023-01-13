@@ -25,13 +25,80 @@ In general, rows will be managed as arrays. Every model (therefore, row) has its
 
 - `generateRandom()`: This one produces a random number between 1 and 9.
 
-- `check(elements, n , j)`: This function return a `boolean` and is in charge to verify if a specyfic number `n` is allowed to ocupy a certain position `j`. According to sudoku rules and the position of `n` it will check the numbers of the columns, rows or quadrants looking for coincidence returning `true` if it is the case and `false` otherwise. 
-- `verifyDuplicate(array , n , j)`: This function return a `boolean` and check if the `n` satisfies other conditions derived from the rules and the previously selected numbers. Making it by runing its own algorithm acordding to those conditions and calling `check(elements , n , j)` when needed. This will be clarified later.
-- `generateNumber(array, n , j)`: This one is a recursive fuction that return a number `n` in case it satisfies the previus function conditions, `check()` and `verifyRepeated()`, or calling itself back again otherwise. In this function `n` will be provided by `generateRandom()`, while the previous functions will recieve `n` from this one. Position `j` will be received by a `for` operation which iterates from 1 to 9, wich are ir order all the positions avaliable in every road. 
-This menas that, considering the whole table, every cell or position name will be given by a conbitation or the row name and de `j` position in it, for example the cell `C7`.
+```bash
+const generateRandom = () => {
+        return Math.ceil(Math.random()*9)
+    }
+```
+
+- `check(elements, n)`: This function return a `boolean` and is in charge to verify if a specyfic number `n` is allowed to ocupy a certain position `j`. According to sudoku rules and the position of `n` it will check the numbers of the columns, rows or quadrants looking for coincidence returning `true` if it is the case and `false` otherwise.
+
+real example:
+
+```bash
+const checkQCA = (quadrant , column , array , n) => {
+        let valueB = false;
+        for (number of quadrant) {
+            if (n === number) {
+                valueB = true;
+                // console.log(n ,'repeated in quadrant');
+                break
+            }
+        };
+        for (digit of column) {
+            if (n === digit) {
+                valueB = true;
+                // console.log(n ,'repeated in column');
+                break;
+            }
+        }; 
+        for (symbol of array) {
+            if (n === symbol) {
+                valueB = true;
+                // console.log(n ,'repeated in array');
+                break
+            }
+        };
+        return valueB
+    };
+```
+- `verifyDuplicate(array , n , j)`: This function return a `boolean` and check if the `n` satisfies other conditions derived from the rules and the previously selected numbers. Making it by runing its own algorithm acordding to those conditions and calling `check(elements , n , j)` when needed. This will be clarified later, cause this is the most variable function of all we have.
+
+- `generateNumber(array , j)`: This one is a recursive fuction that return a number `n` in case it satisfies the previus function conditions, `check()` and `verifyRepeated()`, or calling itself back again otherwise. In this function `n` will be provided by `generateRandom()`, while the previous functions will recieve `n` from this one. Position `j` will be received by a `for` operation which iterates from 1 to 9, wich are ir order all the positions avaliable in every road. 
+This means that, considering the whole table, every cell or position name will be given by a conbitation or the row name and de `j` position in it, for example the cell `C7`.
+
+real example:
+```bash
+const generateNumber = (array , j) => {
+        const random = generateRandom();
+        if (verifyDuplicate(random , array , j)) {
+            loopControl[j] ++ ;
+            if (specialLoopControl === 50) {
+                return 'fatal_error'
+            } else {
+                if (loopControl[j] <= 50) {
+                    return generateNumber(array , j) 
+                } else {
+                    numbers = [];
+                    specialLoopControl ++
+                    loopControl = [0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0]
+                    // console.log('loop prevention reset');
+                    return 'error'
+                }  
+            }
+        } else {
+            return random
+        }
+    }
+```
+As you can se, this is the function that calls every other function named to this point, directly or indirectly. Also, it is provided whit a `loopControl` feature, we'll give more details of this later, but basically, this feature allows us to notice "imposible points" where no number can fit. That shows us where is a serious problem to fix, in some cases we can quickly (but not perfectly) fix it by generating the Row again and again, until, by simple probability there will be no problem. Of course, the ideal solution is to provide an algorithm capable to avoid this scenarios, generating the row by a purely logic maner in one try instead of using "muscle" generating various rows until one of them fits.
+
+However, the `loopControl` features helps us to identify those scenarios, and also helps us to notice when the number of tries point to inifite. Remember, the target is randomness, so, by probabilities it is posible that our `generateRandom()` cassually throw only unfitting numbers even when there are posible fitting numbers. So, the fact that the algorithm tries several times does not necesarely means that it is in an infinite loop, we may put a limit to the number of iterations our algorithm makes. 
+
+While `loopControl` supervises the iterations over the position `j`, `specialLoopControl` supervises the iterations of the row algorithm itself in the cases that we decided to use "raw force". Some "imposible points" require to check the previous rows to be solved, so, for matter of time sometimes we simply decided to declare a "failed operation" in cases where even "raw force" wasn't enough. But keep in mind, all theese problems are in principle purely logically solvable, it's just that some of them consume lots of time and lines of code to fix and "brute force" don't.
 
 Rows will be named after letters from A to I in alphabetical order. And columns afert numbers from 1 to 9. 
-The resulting object will be something like this:
+The resulting sudoku object will be something like this:
 ```bash
 { 5111
   "id": "d091c979-69b6-4219-ba85-1dc62ea133c3",
